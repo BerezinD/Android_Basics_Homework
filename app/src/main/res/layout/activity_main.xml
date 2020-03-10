@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/margin_of_element"
@@ -12,14 +11,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="@dimen/margin_of_element"/>
+            android:layout_margin="@dimen/margin_of_element"
+            android:inputType="number"
+            android:hint="@string/first_number_hint"/>
 
     <EditText
             android:id="@+id/field2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="@dimen/margin_of_element"/>
+            android:layout_margin="@dimen/margin_of_element"
+            android:inputType="number"
+            android:hint="@string/second_number_hint"/>
 
     <RadioGroup
             android:id="@+id/radioOperationGroup"
@@ -29,21 +32,25 @@
             android:layout_margin="@dimen/margin_of_element">
         <RadioButton
                 android:id="@+id/operation1"
+                android:text="@string/plus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
         <RadioButton
                 android:id="@+id/operation2"
+                android:text="@string/minus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
         <RadioButton
                 android:id="@+id/operation3"
+                android:text="@string/divide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
         <RadioButton
                 android:id="@+id/operation4"
+                android:text="@string/multiply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
@@ -51,6 +58,7 @@
 
     <CheckBox
             android:id="@+id/floatValues"
+            android:text="@string/float_values"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -59,6 +67,7 @@
 
     <CheckBox
             android:id="@+id/signedValues"
+            android:text="@string/signed_values"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,6 +76,7 @@
 
     <TextView
             android:id="@+id/resultField"
+            android:text="@string/result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -74,6 +84,7 @@
 
     <Button
             android:id="@+id/calculateButton"
+            android:text="@string/calculate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

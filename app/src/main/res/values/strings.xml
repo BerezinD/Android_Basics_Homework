@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Android Basics Homework</string>
+    <string name="first_number_hint">Type the first number..</string>
+    <string name="second_number_hint">Type the second number..</string>
+    <string name="float_values">Float values</string>
+    <string name="signed_values">Signed values</string>
+    <string name="plus">Plus</string>
+    <string name="minus">Minus</string>
+    <string name="divide">Divide</string>
+    <string name="multiply">Multiply</string>
+    <string name="calculate">Calculate</string>
+    <string name="result">Result</string>
 </resources>
