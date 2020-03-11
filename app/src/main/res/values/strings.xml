@@ -10,4 +10,6 @@
     <string name="multiply">Multiply</string>
     <string name="calculate">Calculate</string>
     <string name="result">Result</string>
+    <string name="operation_not_found">Operation not found</string>
+    <string name="value_cannot_be_empty">You should specify both numbers</string>
 </resources>
