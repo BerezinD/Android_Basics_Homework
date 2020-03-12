@@ -10,7 +10,8 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText firstEditText;
     private EditText secondEditText;
-    private RadioGroup operationChoice;
+    private RadioGroup radioGroup1And2;
+    private RadioGroup radioGroup3And4;
     private CheckBox floatNumbers;
     private CheckBox signedNumbers;
     private TextView resultOfCalculations;
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     private Operation operation;
     private Double numberOne;
     private Double numberTwo;
+
+    private RadioGroup.OnCheckedChangeListener listenerForFirstGroup;
+    private RadioGroup.OnCheckedChangeListener listenerForSecondGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private void initializeAllViews() {
         firstEditText = findViewById(R.id.field1);
         secondEditText = findViewById(R.id.field2);
-        operationChoice = findViewById(R.id.radioOperationGroup);
+        radioGroup1And2 = findViewById(R.id.radioOperationGroup_1_2);
+        radioGroup3And4 = findViewById(R.id.radioOperationGroup_3_4);
         floatNumbers = findViewById(R.id.floatValues);
         signedNumbers = findViewById(R.id.signedValues);
         resultOfCalculations = findViewById(R.id.resultField);
@@ -61,12 +66,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRadioButtonsListeners() {
-        operationChoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        //TODO Replace with getting from resources
+        listenerForFirstGroup = new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                setOperationChoiceState();
+                if (checkedId != -1) {
+                    radioGroup3And4.setOnCheckedChangeListener(null);
+                    radioGroup3And4.clearCheck();
+                    radioGroup3And4.setOnCheckedChangeListener(listenerForSecondGroup);
+                    setOperationChoiceState();
+                }
             }
-        });
+        };
+        listenerForSecondGroup = new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId != -1) {
+                    radioGroup1And2.setOnCheckedChangeListener(null);
+                    radioGroup1And2.clearCheck();
+                    radioGroup1And2.setOnCheckedChangeListener(listenerForFirstGroup);
+                    setOperationChoiceState();
+                }
+            }
+        };
+
+        radioGroup1And2.setOnCheckedChangeListener(listenerForFirstGroup);
+        radioGroup3And4.setOnCheckedChangeListener(listenerForSecondGroup);
     }
 
     private void setCheckBoxesListeners() {
@@ -165,23 +190,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setOperationChoiceState() {
-        switch (operationChoice.getCheckedRadioButtonId()) {
-            case R.id.operation1:
-                operation = Operation.PLUS;
-                break;
-            case R.id.operation2:
-                operation = Operation.MINUS;
-                break;
-            case R.id.operation3:
-                operation = Operation.DIVIDE;
-                break;
-            case R.id.operation4:
-                operation = Operation.MULTIPLY;
-                break;
-            default:
-                operation = null;
+        final int firstGroupButtonId = radioGroup1And2.getCheckedRadioButtonId();
+        final int secondGroupButtonId = radioGroup3And4.getCheckedRadioButtonId();
+        if (firstGroupButtonId == -1 && secondGroupButtonId == -1) {
+            operation = null;
+        } else {
+            switch (firstGroupButtonId) {
+                case R.id.operation1:
+                    operation = Operation.PLUS;
+                    break;
+                case R.id.operation2:
+                    operation = Operation.MINUS;
+                    break;
+                default:
+                    break;
+            }
+            switch (secondGroupButtonId) {
+                case R.id.operation3:
+                    operation = Operation.DIVIDE;
+                    break;
+                case R.id.operation4:
+                    operation = Operation.MULTIPLY;
+                    break;
+                default:
+                    break;
+            }
+            //TODO set to state
         }
-        //TODO set to state
     }
 
     private boolean isNumbersCorrect() {
