@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android Basics Homework</string>
+    <string name="first_number_hint">Введите первый аргумент..</string>
+    <string name="second_number_hint">Введите второй аргумент..</string>
+    <string name="float_values">Использовать дробные числа</string>
+    <string name="signed_values">Использовать знаковые числа</string>
+    <string name="plus">Плюс</string>
+    <string name="minus">Минус</string>
+    <string name="divide">Делить</string>
+    <string name="multiply">Умножить</string>
+    <string name="calculate">Подсчитать!</string>
+    <string name="result">Результат</string>
+    <string name="operation_not_found">Выберите выполняемую операцию</string>
+    <string name="value_cannot_be_empty">Вы должны заполнить оба аргумента</string>
+</resources>

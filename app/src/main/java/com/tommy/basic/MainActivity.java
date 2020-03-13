@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.*;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import static android.text.TextUtils.isEmpty;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,20 +25,21 @@ public class MainActivity extends AppCompatActivity {
     private Operation operation;
     private Double numberOne;
     private Double numberTwo;
+    private Double result;
 
     private RadioGroup.OnCheckedChangeListener listenerForFirstGroup;
     private RadioGroup.OnCheckedChangeListener listenerForSecondGroup;
 
+    private static final String RESULT_KEY = "RESULT";
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO read from previous state
         initializeAllViews();
         setRadioButtonsListeners();
         setCheckBoxesListeners();
-        setTextEditorsListener();
 
         calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,15 +47,30 @@ public class MainActivity extends AppCompatActivity {
                 if (operation == null) {
                     showExceptionToast(getString(R.string.operation_not_found));
                 } else {
-                    if (isNumbersCorrect()) {
-                        resultOfCalculations.setText(String.valueOf(calculate(numberOne, numberTwo, operation)));
-                        //TODO set to state
+                    if (isSettingNumbersCorrect()) {
+                        result = calculate(numberOne, numberTwo, operation);
+                        resultOfCalculations.setText(String.valueOf(result));
                     } else {
                         showExceptionToast(getString(R.string.value_cannot_be_empty));
                     }
                 }
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (result != null) {
+            outState.putDouble(RESULT_KEY, result);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        result = savedInstanceState.getDouble(RESULT_KEY);
+        resultOfCalculations.setText(String.valueOf(result));
     }
 
     private void initializeAllViews() {
@@ -66,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRadioButtonsListeners() {
-        //TODO Replace with getting from resources
         listenerForFirstGroup = new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -111,41 +129,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setTextEditorsListener() {
-        firstEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                try {
-                    numberOne = Double.valueOf(String.valueOf(firstEditText.getText()));
-                } catch (NumberFormatException e) {
-                    numberOne = null;
-                    showExceptionToast(e.getLocalizedMessage());
-                }
-            }
-        });
-        secondEditText.setOnFocusChangeListener(getListenerForEditTextForms());
-    }
-
-    private View.OnFocusChangeListener getListenerForEditTextForms() {
-        return new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                try {
-                    switch (v.getId()) {
-                        case R.id.field1:
-                            numberOne = Double.valueOf(String.valueOf(firstEditText.getText()));
-                            break;
-                        case R.id.field2:
-                            numberTwo = Double.valueOf(String.valueOf(firstEditText.getText()));
-                            break;
-                    }
-                } catch (NumberFormatException e) {
-                    showExceptionToast(e.getLocalizedMessage());
-                }
-            }
-        };
-    }
-
     private Double calculate(double a, double b, Operation operation) {
         try {
             switch (operation) {
@@ -167,14 +150,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showExceptionToast(String localizedMessage) {
-        Toast.makeText(getApplicationContext(), localizedMessage, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), localizedMessage, Toast.LENGTH_SHORT).show();
     }
 
     private void setInputTypeToTextViews() {
         int inputType = getInputType(isFloatNumber, isSignedNumber);
         firstEditText.setInputType(inputType);
         secondEditText.setInputType(inputType);
-        //TODO set to state
     }
 
     private int getInputType(boolean isFloatNumber, boolean isSignedNumber) {
@@ -202,10 +184,16 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.operation2:
                     operation = Operation.MINUS;
                     break;
+                case R.id.operation3:
+                    operation = Operation.DIVIDE;
+                    break;
                 default:
                     break;
             }
             switch (secondGroupButtonId) {
+                case R.id.operation2:
+                    operation = Operation.MINUS;
+                    break;
                 case R.id.operation3:
                     operation = Operation.DIVIDE;
                     break;
@@ -215,11 +203,16 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     break;
             }
-            //TODO set to state
         }
     }
 
-    private boolean isNumbersCorrect() {
-        return (numberOne != null && numberTwo != null);
+    private boolean isSettingNumbersCorrect() {
+        if (!isEmpty(firstEditText.getText()) && !isEmpty(secondEditText.getText())) {
+            numberOne = Double.valueOf(String.valueOf(firstEditText.getText()));
+            numberTwo = Double.valueOf(String.valueOf(secondEditText.getText()));
+            return true;
+        } else {
+            return false;
+        }
     }
 }
